@@ -4,7 +4,7 @@ import { padZero } from '../../core/utils/padZero';
 
 export function useTimer() {
   const [hours, setHours] = useState('00');
-  const [minutes, setMinutes] = useState('58');
+  const [minutes, setMinutes] = useState('00');
   const [seconds, setSeconds] = useState('00');
   const [isPaused, setIsPaused] = useState(true);
 
