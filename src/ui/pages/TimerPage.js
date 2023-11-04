@@ -1,20 +1,19 @@
 import { StyleSheet, View } from 'react-native';
 
-import { Text, useTheme } from 'react-native-paper';
-
-import { useStopwatch } from '../hooks/useStopwatch';
+import { Text } from 'react-native-paper';
 
 import AppButton from '../components/AppButton';
 
-export default function StopwatchPage() {
-  const { togglePause, resetStopwatch, getFormattedTime, getStartButtonText } =
-    useStopwatch();
-  const theme = useTheme();
+import { useTimer } from '../hooks/useTimer';
+
+export default function TimerPage() {
+  const { togglePause, resetTimer, getFormattedTime, getStartButtonText } =
+    useTimer();
 
   return (
     <View style={styles.container}>
       <Text variant="displayMedium" style={{ color: theme.colors.background }}>
-        Cronômetro
+        Temporizador
       </Text>
 
       <Text variant="displayLarge" style={{ color: theme.colors.background }}>
@@ -23,7 +22,7 @@ export default function StopwatchPage() {
 
       <AppButton onPress={togglePause}>{getStartButtonText()}</AppButton>
 
-      <AppButton onPress={resetStopwatch}>Resetar</AppButton>
+      <AppButton onPress={resetTimer}>Resetar</AppButton>
     </View>
   );
 }

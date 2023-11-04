@@ -1,13 +1,17 @@
 import { PaperProvider } from 'react-native-paper';
 
-import StopwatchPage from './src/ui/pages/StopwatchPage';
+import { NavigationContainer } from '@react-navigation/native';
 
 import theme from './src/ui/themes';
 
+import AppMaterialTopTabsNavigator from './src/ui/navigators/AppMaterialTopTabsNavigator';
+
 export default function App() {
   return (
-    <PaperProvider theme={theme}>
-      <StopwatchPage />
-    </PaperProvider>
+    <NavigationContainer>
+      <PaperProvider theme={theme}>
+        <AppMaterialTopTabsNavigator />
+      </PaperProvider>
+    </NavigationContainer>
   );
 }

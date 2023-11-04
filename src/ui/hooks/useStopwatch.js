@@ -2,24 +2,24 @@ import { useEffect, useState } from 'react';
 
 import { padZero } from '../../core/utils/padZero';
 
-export function useTimer() {
+export function useStopwatch() {
   const [hours, setHours] = useState('00');
   const [minutes, setMinutes] = useState('00');
   const [seconds, setSeconds] = useState('00');
   const [isPaused, setIsPaused] = useState(true);
 
   useEffect(() => {
-    const almostZeroMinutes = Number(minutes) === 1;
-    if (almostZeroMinutes) {
-      setHours(padZero(String(Number(hours) - 1)));
+    const almostAnHour = Number(minutes) === 59;
+    if (almostAnHour) {
+      setHours(padZero(String(Number(hours) + 1)));
       setMinutes('00');
     }
   }, [minutes]);
 
   useEffect(() => {
-    const almostZeroSeconds = Number(seconds) === 1;
-    if (almostZeroSeconds) {
-      setMinutes(padZero(String(Number(minutes) - 1)));
+    const almostAMinute = Number(seconds) === 59;
+    if (almostAMinute) {
+      setMinutes(padZero(String(Number(minutes) + 1)));
       setSeconds('00');
     }
   }, [seconds]);
@@ -30,7 +30,7 @@ export function useTimer() {
     if (!isPaused) {
       timer = setInterval(() => {
         setSeconds((previousSeconds) =>
-          padZero(String(Number(previousSeconds) - 1))
+          padZero(String(Number(previousSeconds) + 1))
         );
       }, 1000);
     } else {
@@ -46,7 +46,7 @@ export function useTimer() {
     setIsPaused(!isPaused);
   }
 
-  function resetTimer() {
+  function resetStopwatch() {
     setHours('00');
     setMinutes('00');
     setSeconds('00');
@@ -64,7 +64,7 @@ export function useTimer() {
   return {
     isPaused,
     togglePause,
-    resetTimer,
+    resetStopwatch,
     getFormattedTime,
     getStartButtonText,
   };
