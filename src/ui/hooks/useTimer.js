@@ -9,38 +9,35 @@ export function useTimer() {
   const [isPaused, setIsPaused] = useState(true);
 
   useEffect(() => {
-    const almostZeroMinutes = Number(minutes) === 1;
-    if (almostZeroMinutes) {
-      setHours(padZero(String(Number(hours) - 1)));
-      setMinutes('00');
-    }
-  }, [minutes]);
-
-  useEffect(() => {
-    const almostZeroSeconds = Number(seconds) === 1;
-    if (almostZeroSeconds) {
-      setMinutes(padZero(String(Number(minutes) - 1)));
-      setSeconds('00');
-    }
-  }, [seconds]);
-
-  useEffect(() => {
     let timer;
 
+    const tick = () => {
+      if (!isPaused) {
+        if (Number(seconds) > 0) {
+          setSeconds(padZero(String(Number(seconds) - 1)));
+        } else {
+          if (Number(minutes) > 0) {
+            setMinutes(padZero(String(Number(minutes) - 1)));
+            setSeconds('59');
+          } else {
+            if (Number(hours) > 0) {
+              setHours(padZero(String(Number(hours) - 1)));
+              setMinutes('59');
+              setSeconds('59');
+            } else { 
+              setIsPaused(true); 
+            }
+          }
+        }
+      }
+    };
+
     if (!isPaused) {
-      timer = setInterval(() => {
-        setSeconds((previousSeconds) =>
-          padZero(String(Number(previousSeconds) - 1))
-        );
-      }, 1000);
-    } else {
-      clearInterval(timer);
+      timer = setInterval(tick, 1000);
     }
 
-    return () => {
-      clearInterval(timer);
-    };
-  }, [isPaused]);
+    return () => clearInterval(timer);
+  }, [isPaused, seconds, minutes, hours]);
 
   function togglePause() {
     setIsPaused(!isPaused);
@@ -53,19 +50,20 @@ export function useTimer() {
     setIsPaused(true);
   }
 
-  function getFormattedTime() {
-    return `${hours}:${minutes}:${seconds}`;
-  }
-
   function getStartButtonText() {
     return isPaused ? 'Iniciar' : 'Pausar';
   }
 
   return {
     isPaused,
+    seconds,
+    minutes,
+    hours,
+    setSeconds,
+    setMinutes,
+    setHours,
     togglePause,
     resetTimer,
-    getFormattedTime,
     getStartButtonText,
   };
 }
